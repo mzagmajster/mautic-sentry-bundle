@@ -1,4 +1,5 @@
-# Mautic Plugin Boilerplate
+# Mautic Sentry Bundle - work in progress
+
 
 Empty Mautic plugin bundle (zero functionality). Tested on **Mautic 3.3.3**. Go ahead use this boilerplate and provide more custom functionality to Mautic - Open source Marketing Automation Tool.
 
