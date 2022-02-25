@@ -1,4 +1,4 @@
-# Mautic Sentry Bundle - work in progress
+# Mautic Sentry Bundle
 
 
 Empty Mautic plugin bundle (zero functionality). Tested on **Mautic 3.3.3**. Go ahead use this boilerplate and provide more custom functionality to Mautic - Open source Marketing Automation Tool.
@@ -7,8 +7,8 @@ Empty Mautic plugin bundle (zero functionality). Tested on **Mautic 3.3.3**. Go 
 
 ### Prerequisites
 
-* Composer 1
-* Mautic 3
+* Composer
+* Mautic 4
 
 
 ### Installing
@@ -25,10 +25,23 @@ Use hooks from .githooks folder on project by executing:
 cd <mautic-root-folder>
 rm -rf var/cache/dev/* var/cache/prod/*
 cd plugins
-git clone <repo-url> MauticHelloWorldBundle
+git clone <repo-url> MZagmajsterSentryBundle
 cd <mautic-root-folder>
 composer install  # You only need this druing development.
 php bin/console mautic:plugins:install --dev  # You should get a message saying one or more plugins have been installed in terminal.
+```
+
+Update the values in parameters array in ```Config/config.php``` so it describes your project and connects to your Sentry account via DSN.
+
+```
+'parameters'  => [
+        'mzagmajster_sentry_dsn'          => '',  // Sentry DSN
+        'mzagmajster_sentry_environment'  => '',  // string describing software env. (like staging, production,...)
+        'mzagmajster_sentry_sw_release'   => '1.0.7',  // Release version of plugin you are monitoring.
+        'mzagmajster_sentry_log_level'    => \Monolog\Logger::ERROR,  // Log level at which we send log entry to Sentry.
+        'mzagmajster_sentry_log_bubble'   => true,  // Turn on/off bubble mode
+        'mzagmajster_sentry_project_root' => '/var/www/html/mautic',
+    ],
 ```
 
 
@@ -39,7 +52,7 @@ Typical **update** of plugin source code described below.
 ```
 cd <mautic-root-folder>
 rm -rf var/cache/dev/* var/cache/prod/*
-cd plugins/MauticHelloWorldBundle
+cd plugins/MZagmajsterSentryBundle
 git pull origin <branch>
 php bin/console mautic:plugins:reload --dev  # You should get a message saying one or more plugins have been installed in terminal.
 ```
@@ -90,7 +103,7 @@ Content in this project was provided by [Matic Zagmajster](http://maticzagmajste
 
 ## Acknowledgments
 
-* Thanks to entire Mautic Community for providing awesome marketing automation tool.
+* Thanks to B-Galati for providing [this](https://github.com/B-Galati/monolog-sentry-handler) project and factory example. It was really helpful in the process of integration Mautic & Sentry.
 
 
 
