@@ -2,11 +2,9 @@
 
 namespace MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory;
 
-use \AppKernel;
+use AppKernel;
 use Jean85\PrettyVersions;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
-/*use Nyholm\Psr7\Factory\HttplugFactory;
-use Nyholm\Psr7\Factory\Psr17Factory;*/
 use Sentry\Client;
 use Sentry\ClientBuilder;
 use Sentry\HttpClient\HttpClientFactory;
@@ -20,19 +18,21 @@ use Symfony\Component\HttpClient\HttplugClient;
 
 class SentryFactory
 {
-    private static function getConfig() {
-        $config = include(__DIR__ . '/../../.plugin-env.php');
-        return $config;
+    private $coreParametersHelper;
 
+    public function __construct(CoreParametersHelper $coreParametersHelper)
+    {
+        $this->coreParametersHelper = $coreParametersHelper;
     }
 
-    private static function create(
-        ?string $dsn,
-        string $environment,
-        string $release,
-        string $projectRoot,
-        string $cacheDir
-    ): HubInterface {
+    public function __invoke(): HubInterface
+    {
+        $dsn         = $this->coreParametersHelper->get('mzagmajster_sentry_dsn');
+        $environment = $this->coreParametersHelper->get('mzagmajster_sentry_environment');
+        $release     = $this->coreParametersHelper->get('mzagmajster_sentry_sw_release');
+        $projectRoot = $this->coreParametersHelper->get('mzagmajster_sentry_project_root');
+        $cacheDir    = $this->coreParametersHelper->get('cache_path');
+
         $clientBuilder = ClientBuilder::create([
             'dsn'                  => $dsn ?: null,
             'environment'          => $environment, // I.e.: staging, testing, production, etc.
@@ -61,16 +61,5 @@ class SentryFactory
 
         // A global HubInterface must be set otherwise some feature provided by the SDK does not work as they rely on this global state
         return SentrySdk::setCurrentHub(new Hub($client));
-    }
-
-    public static function createHubInstance() {
-        $config = self::getConfig();
-        return self::create(
-            $config['sentry_dsn'],
-            $config['environment'],
-            $config['release'],
-            $config['project_root'],
-            $config['cache_dir']
-        );
     }
 }
