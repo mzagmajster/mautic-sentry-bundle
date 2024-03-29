@@ -9,9 +9,47 @@ Empty Mautic plugin bundle (zero functionality). Tested on **Mautic 4**. Go ahea
 
 * Composer
 * Mautic 4
+* [Monolog Sentry Helper](https://github.com/B-Galati/monolog-sentry-handler)
 
 
 ### Installing
+
+Install Monolog Handler (Sentry PHP SDK 3)
+
+```
+composer require bgalati/monolog-sentry-handler
+```
+
+Copy monolog extension configuration from prod/dev app config in app/config folder to app/config/config_local.php.
+
+And then extend monolog config with this configuration for Sentry:
+
+```
+'handlers' => [
+
+        /*
+         * Other handlers....
+         */
+
+        'sentry' => [
+            'formatter' => 'mautic.monolog.fulltrace.formatter',
+            'type'      => 'fingers_crossed',
+            'excluded_http_codes' => [400, 401, 403, 404, 405],
+            'buffer_size' => 100,
+            //'path'      => '%kernel.logs_dir%/mautic_%kernel.environment%.php',
+            'level'     => 'error',
+            'handler' => 'sentry_buffer'
+        ],
+        'sentry_buffer' => [
+            'type' => 'buffer',
+            'handler' => 'sentry_handler'
+        ],
+        'sentry_handler' => [
+            'type' => 'service',
+            'id' => 'bgalati.monolog_sentry_handler.sentry_handler',
+        ]
+],
+```
 
 Use hooks from .githooks folder on project by executing:
 
@@ -41,7 +79,7 @@ Update the values in parameters array in ```Config/config.php``` so it describes
         'mzagmajster_sentry_log_level'    => \Monolog\Logger::ERROR,  // Log level at which we send log entry to Sentry.
         'mzagmajster_sentry_log_bubble'   => true,  // Turn on/off bubble mode
         'mzagmajster_sentry_project_root' => '/var/www/html/mautic',
-    ],
+],
 ```
 
 

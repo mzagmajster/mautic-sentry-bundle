@@ -41,11 +41,11 @@ class SentryFactory
             'prefixes'             => [$projectRoot],
             'release'              => $release,
             'default_integrations' => false,
-            'send_attempts'        => 1,
             'tags'                 => [
                 'php_uname'       => \PHP_OS,
                 'php_sapi_name'   => \PHP_SAPI,
                 'php_version'     => \PHP_VERSION,
+                'mautic_version'  => \MAUTIC_VERSION,
                 'framework'       => 'symfony',
                 'symfony_version' => '4.4.26',
             ],
