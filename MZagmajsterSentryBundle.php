@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class MZagmajsterSentryBundle extends PluginBundleBase
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $definition = new Definition(HubInterface::class);
         $definition->setFactory(
@@ -35,17 +35,5 @@ class MZagmajsterSentryBundle extends PluginBundleBase
             '%mautic.mzagmajster_sentry_log_bubble%',
         ]);
         $container->setDefinition('bgalati.monolog_sentry_handler.sentry_handler', $definition);
-    }
-
-    /**
-     * Called by PluginController::reloadAction when the plugin version does not match what's installed.
-     *
-     * @param null   $metadata
-     * @param Schema $installedSchema
-     *
-     * @throws \Exception
-     */
-    public static function onPluginUpdate(Plugin $plugin, MauticFactory $factory, $metadata = null, Schema $installedSchema = null)
-    {
     }
 }

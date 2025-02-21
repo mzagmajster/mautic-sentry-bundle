@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-require_once MAUTIC_ROOT_DIR.'/.idc-plugin-env.php';
 
 return [
     'name'        => 'MZagmajsterSentry',
@@ -43,11 +42,11 @@ return [
 
     'menu'        => [],  // end menu
     'parameters'  => [
-        'mzagmajster_sentry_dsn'          => \MauticPlugin\MauticIdConferenceBundle\Env\SENTRY_DSN,
-        'mzagmajster_sentry_environment'  => \MauticPlugin\MauticIdConferenceBundle\Env\MODE,
+        'mzagmajster_sentry_dsn'          => 'https://73968020075a99d503e7fa4f900b4a48@sentry.sos-sw.si/23',
+        'mzagmajster_sentry_environment'  => 'production',
         'mzagmajster_sentry_sw_release'   => '1.0.7',
         'mzagmajster_sentry_log_level'    => \Monolog\Logger::ERROR,
         'mzagmajster_sentry_log_bubble'   => true,
-        'mzagmajster_sentry_project_root' => '/var/www/html/mautic',
+        'mzagmajster_sentry_project_root' => '/var/www/html',
     ],
 ];
