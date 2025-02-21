@@ -5,14 +5,7 @@ declare(strict_types=1);
 namespace MauticPlugin\MZagmajsterSentryBundle;
 
 use BGalati\MonologSentryHandler\SentryHandler;
-use BGalati\MonologSentryHandler\SentryHnadler;
-use Doctrine\DBAL\Schema\Schema;
-use Mautic\CoreBundle\Factory\MauticFactory;
 use Mautic\PluginBundle\Bundle\PluginBundleBase;
-use Mautic\PluginBundle\Entity\Plugin;
-use MauticPlugin\MZagmajsterSentryBundle\DependencyInjection\Compiler\OverrideSentryPass;
-use MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory\SentryFactory;
-use Sentry\State\Hub;
 use Sentry\State\HubInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -24,7 +17,7 @@ class MZagmajsterSentryBundle extends PluginBundleBase
     {
         $definition = new Definition(HubInterface::class);
         $definition->setFactory(
-            //'MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory\SentryFactory::createHubInstance'
+            // 'MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory\SentryFactory::createHubInstance'
             new Reference('mzagmajster.sentry.factory.sentry_factory')
         );
         $container->setDefinition('sentry.state.hub_interface', $definition);

@@ -2,19 +2,13 @@
 
 namespace MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory;
 
-use AppKernel;
-use Jean85\PrettyVersions;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
-use Sentry\Client;
 use Sentry\ClientBuilder;
-use Sentry\HttpClient\HttpClientFactory;
 use Sentry\Integration\RequestIntegration;
 use Sentry\SentrySdk;
 use Sentry\State\Hub;
 use Sentry\State\HubInterface;
-use Sentry\Transport\DefaultTransportFactory;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\HttpClient\HttplugClient;
 
 class SentryFactory
 {
