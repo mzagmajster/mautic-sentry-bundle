@@ -9,6 +9,7 @@ use Sentry\SentrySdk;
 use Sentry\State\Hub;
 use Sentry\State\HubInterface;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpKernel\Kernel;
 
 class SentryFactory
 {
@@ -41,7 +42,7 @@ class SentryFactory
                 'php_version'     => \PHP_VERSION,
                 'mautic_version'  => \MAUTIC_VERSION,
                 'framework'       => 'symfony',
-                'symfony_version' => '4.4.26',
+                'symfony_version' => Kernel::VERSION,
             ],
         ]);
 
