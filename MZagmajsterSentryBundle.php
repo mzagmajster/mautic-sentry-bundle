@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class MZagmajsterSentryBundle extends PluginBundleBase
 {
-    public function build(ContainerBuilder $container): void
+    /*public function build(ContainerBuilder $container): void
     {
         $definition = new Definition(HubInterface::class);
         $definition->setFactory(
@@ -28,5 +28,5 @@ class MZagmajsterSentryBundle extends PluginBundleBase
             '%mautic.mzagmajster_sentry_log_bubble%',
         ]);
         $container->setDefinition('bgalati.monolog_sentry_handler.sentry_handler', $definition);
-    }
+    }*/
 }

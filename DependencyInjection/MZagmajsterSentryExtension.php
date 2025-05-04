@@ -19,4 +19,11 @@ class MZagmajsterSentryExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Config'));
         $loader->load('services.php');
     }
+
+    public function build(ContainerBuilder $container): void
+    {
+        // If you want to alias Sentry\State\HubInterface automatically
+        $container->setAlias(\Sentry\State\HubInterface::class, 'mzagmajster.sentry.factory.sentry_factory')
+            ->setPublic(true);
+    }
 }
