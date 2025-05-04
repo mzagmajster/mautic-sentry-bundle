@@ -5,6 +5,6 @@ declare(strict_types=1);
 return [
     'name'        => 'MZagmajsterSentry',
     'description' => 'Mautic & Sentry Integration',
-    'version'     => '0.0.1',
+    'version'     => '1.0.0',
     'author'      => 'Matic Zagmajster',
 ];

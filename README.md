@@ -95,7 +95,8 @@ Please use style fixer from Mautic core.
 
 ## Changelog
 
-[No changelog yet.]
+* 0.0.1 - compoatible with Mautic 4
+* 1.0.0 - comptaible with Mautic 5
 
 ## Documentation
 
