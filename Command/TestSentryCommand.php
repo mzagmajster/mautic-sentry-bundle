@@ -49,7 +49,7 @@ class TestSentryCommand extends ModeratedCommand
 
         $this->mauticLogger->error('Testing Sentry Monolog integration...');
 
-        throw new \Exception('Testing Sentry Monolog integration, basic exception.');
+        // throw new \Exception('Testing Sentry Monolog integration, basic exception.');
         $this->completeRun();
 
         return 0;

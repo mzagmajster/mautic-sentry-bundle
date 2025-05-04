@@ -8,19 +8,19 @@ Empty Mautic plugin bundle (zero functionality). Tested on **Mautic 4**. Go ahea
 ### Prerequisites
 
 * Composer
-* Mautic 4
-* [Monolog Sentry Helper](https://github.com/B-Galati/monolog-sentry-handler)
+* Mautic 5
+* [Sentry](https://docs.sentry.io/platforms/php/guides/symfony/integrations/monolog/)
 
 
 ### Installing
 
-Install Monolog Handler (Sentry PHP SDK 3)
+Install sentry package.
 
 ```
-composer require bgalati/monolog-sentry-handler
+composer require sentry/sentry-symfony
 ```
 
-Copy monolog extension configuration from prod/dev app config in app/config folder to app/config/config_local.php.
+Copy monolog extension configuration from prod/dev app config in app/config folder to config/config_local.php.
 
 And then extend monolog config with this configuration for Sentry:
 
@@ -30,25 +30,23 @@ And then extend monolog config with this configuration for Sentry:
         /*
          * Other handlers....
          */
-
-        'sentry' => [
-            'formatter' => 'mautic.monolog.fulltrace.formatter',
-            'type'      => 'fingers_crossed',
-            'excluded_http_codes' => [400, 401, 403, 404, 405],
-            'buffer_size' => 100,
-            //'path'      => '%kernel.logs_dir%/mautic_%kernel.environment%.php',
-            'level'     => 'error',
-            'handler' => 'sentry_buffer'
-        ],
-        'sentry_buffer' => [
-            'type' => 'buffer',
-            'handler' => 'sentry_handler'
-        ],
-        'sentry_handler' => [
-            'type' => 'service',
-            'id' => 'bgalati.monolog_sentry_handler.sentry_handler',
-        ]
+    'sentry' => [
+        'type'     => 'service',
+        'id'       => 'mzagmajster.sentry.handler.sentry',            
+        'channels' => ['!event'],
+    ],
 ],
+```
+
+Add variables to .env.local:
+
+```
+SENTRY_DSN=<dsn>
+
+# These are passed to Sentry Monolog Handler
+MAUTIC_SENTRY_MONOLOG_LEVEL=error
+MAUTIC_SENTRY_MONOLOG_BUBBLE=true
+MAUTIC_SENTRY_MONOLOG_FILL_EXTRA_CONTEXT=false
 ```
 
 Use hooks from .githooks folder on project by executing:
@@ -67,19 +65,6 @@ git clone <repo-url> MZagmajsterSentryBundle
 cd <mautic-root-folder>
 composer install  # You only need this druing development.
 php bin/console mautic:plugins:install --dev  # You should get a message saying one or more plugins have been installed in terminal.
-```
-
-Update the values in parameters array in ```Config/config.php``` so it describes your project and connects to your Sentry account via DSN.
-
-```
-'parameters'  => [
-        'mzagmajster_sentry_dsn'          => '',  // Sentry DSN
-        'mzagmajster_sentry_environment'  => '',  // string describing software env. (like staging, production,...)
-        'mzagmajster_sentry_sw_release'   => '1.0.7',  // Release version of plugin you are monitoring.
-        'mzagmajster_sentry_log_level'    => \Monolog\Logger::ERROR,  // Log level at which we send log entry to Sentry.
-        'mzagmajster_sentry_log_bubble'   => true,  // Turn on/off bubble mode
-        'mzagmajster_sentry_project_root' => '/var/www/html/mautic',
-],
 ```
 
 
@@ -101,13 +86,7 @@ php bin/console mautic:plugins:reload --dev  # You should get a message saying o
 
 ### Coding style
 
-Please refer to PHP CS file for details on coding styles.
-
-From plugin root folder you can also run the following commands during development.
-
-* ```composer lint``` - Checks the PHP syntax.
-* ```composer checkcs``` - Checks code formatting && show what should be fixed (does not touch source files).
-* ```composer fixcs``` - Fixes code formatting (updates soruce files).
+Please use style fixer from Mautic core.
 
 ## Deployment
 
@@ -138,10 +117,5 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 Content in this project was provided by [Matic Zagmajster](http://maticzagmajster.ddns.net/). For more information please see ```AUTHORS``` file.
-
-## Acknowledgments
-
-* Thanks to B-Galati for providing [this](https://github.com/B-Galati/monolog-sentry-handler) project and factory example. It was really helpful in the process of integration Mautic & Sentry.
-
 
 
