@@ -36,8 +36,6 @@ class SentryFactory
             $cacheDir,
         ];
 
-        print_r($params);
-
         $clientBuilder = ClientBuilder::create([
             'dsn'                  => $dsn,
             'environment'          => $environment,
