@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use MauticPlugin\MZagmajsterSentryBundle\Integration\MZagmajsterSentryIntegration;
 use MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory\SentryFactory;
 use MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory\SentryHandlerFactory;
 use Sentry\Monolog\Handler;
@@ -49,7 +48,6 @@ return function (ContainerConfigurator $configurator) {
     $services->set(SentryFactory::class)
         ->args([
             service('mautic.helper.core_parameters'),
-            service(MZagmajsterSentryIntegration::class),
         ]);
 
     $services->alias('mzagmajster.sentry.factory.sentry_factory', SentryFactory::class);
@@ -65,9 +63,4 @@ return function (ContainerConfigurator $configurator) {
 
     $services->set('mzagmajster.sentry.handler.sentry', Handler::class)
         ->factory([service(SentryHandlerFactory::class), 'create']);
-
-    $services->set('mautic.integration.mzagmajstersentry')
-    ->class(
-        MZagmajsterSentryIntegration::class
-    );
 };
