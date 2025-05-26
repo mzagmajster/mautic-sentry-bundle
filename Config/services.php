@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Mautic\CoreBundle\DependencyInjection\MauticCoreExtension;
+use MauticPlugin\MZagmajsterSentryBundle\Integration\MZagmajsterSentryIntegration;
 use MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory\SentryFactory;
 use MauticPlugin\MZagmajsterSentryBundle\Sentry\Factory\SentryHandlerFactory;
 use Sentry\Monolog\Handler;
@@ -18,18 +18,38 @@ return function (ContainerConfigurator $configurator) {
         ->autoconfigure()
         ->public();
 
-    $excludes = [];
+    $excludes = [
+        'Config',
+        'Crate',
+        'DataObject',
+        'DependencyInjection',
+        'DTO',
+        'Entity',
+        'Event',
+        'Exception',
+        'Migration',
+        'Migrations',
+        'Security',
+        'Test',
+        'Tests',
+        'Views',
+
+        '.devtools',
+        '.env',
+        'bin',
+    ];
 
     $services->load(
         'MauticPlugin\\MZagmajsterSentryBundle\\',
         '../'
     )
-        ->exclude('../{'.implode(',', array_merge(MauticCoreExtension::DEFAULT_EXCLUDES, $excludes)).'}');
+        ->exclude('../{'.implode(',', $excludes).'}');
 
     // Core Hub factory
     $services->set(SentryFactory::class)
         ->args([
             service('mautic.helper.core_parameters'),
+            service(MZagmajsterSentryIntegration::class),
         ]);
 
     $services->alias('mzagmajster.sentry.factory.sentry_factory', SentryFactory::class);
@@ -45,4 +65,9 @@ return function (ContainerConfigurator $configurator) {
 
     $services->set('mzagmajster.sentry.handler.sentry', Handler::class)
         ->factory([service(SentryHandlerFactory::class), 'create']);
+
+    $services->set('mautic.integration.mzagmajstersentry')
+    ->class(
+        MZagmajsterSentryIntegration::class
+    );
 };

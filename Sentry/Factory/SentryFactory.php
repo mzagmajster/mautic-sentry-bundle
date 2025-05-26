@@ -12,7 +12,7 @@ use Sentry\State\HubInterface;
 class SentryFactory
 {
     public function __construct(
-        private CoreParametersHelper $coreParametersHelper
+        private CoreParametersHelper $coreParametersHelper,
     ) {
     }
 
@@ -27,14 +27,6 @@ class SentryFactory
         $release     = \MAUTIC_VERSION;
         $projectRoot = \MAUTIC_ROOT_DIR;
         $cacheDir    = $this->coreParametersHelper->get('cache_path');
-
-        $params = [
-            $dsn,
-            $environment,
-            $release,
-            $projectRoot,
-            $cacheDir,
-        ];
 
         $clientBuilder = ClientBuilder::create([
             'dsn'                  => $dsn,
@@ -53,14 +45,6 @@ class SentryFactory
 
         $hub = new Hub($client);
         SentrySdk::setCurrentHub($hub);
-
-        // Test sending a simple event (non-blocking)
-        /*try {
-            $eventId = $hub->captureMessage('Sentry is successfully initialized.', \Sentry\Severity::info());
-            printf("Test event sent. Event ID: %s\n", $eventId ?? 'none');
-        } catch (\Exception $e) {
-            printf("Error sending test event to Sentry: %s\n", $e->getMessage());
-        }*/
 
         return $hub;
     }
